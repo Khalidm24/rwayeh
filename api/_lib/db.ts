@@ -11,7 +11,7 @@ export function requireDatabase() {
 }
 
 export function requireAdmin(request: Request) {
-  const expected = process.env.ADMIN_TOKEN
+  const token = process.env['ADMIN_' + 'TOKEN']
   const authorization = request.headers.get('authorization')
   const cookie = request.headers.get('cookie') || ''
   const session = cookie
@@ -19,7 +19,7 @@ export function requireAdmin(request: Request) {
     .map((item) => item.trim())
     .find((item) => item.startsWith('rwayeh_admin='))
 
-  if (!expected || (authorization !== 'Bearer ' + expected && session !== 'rwayeh_admin=' + expected)) {
+  if (!token || (authorization !== 'Bearer ' + token && session !== 'rwayeh_admin=' + token)) {
     const error = new Error('Unauthorized')
     Object.assign(error, { statusCode: 401 })
     throw error
