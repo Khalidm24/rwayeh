@@ -126,7 +126,7 @@ function App() {
     {view === 'account' && <Account navigate={navigate} />}
     {view === 'admin' && <Admin navigate={navigate} />}
     <Footer navigate={navigate} />
-    <a href="https://wa.me/212611738119?text=Bonjour%20RWAYEH%2C%20je%20voudrais%20plus%20d'informations%20sur%20vos%20parfums." target="_blank" rel="noreferrer" aria-label="Contacter RWAYEH sur WhatsApp" title="Contacter RWAYEH sur WhatsApp" className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-105 hover:bg-[#1ebe5d]">
+    <a href="https://wa.me/212611938119?text=Bonjour%20RWAYEH%2C%20je%20voudrais%20plus%20d'informations%20sur%20vos%20parfums." target="_blank" rel="noreferrer" aria-label="Contacter RWAYEH sur WhatsApp" title="Contacter RWAYEH sur WhatsApp" className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-105 hover:bg-[#1ebe5d]">
       <MessageCircle className="h-7 w-7 fill-white text-[#25D366]" strokeWidth={2.2} />
     </a>
     <CartDrawer open={cartOpen} cart={cart} subtotal={subtotal} shipping={shipping} total={total} updateQty={updateQty} onClose={() => setCartOpen(false)} navigate={navigate} />
