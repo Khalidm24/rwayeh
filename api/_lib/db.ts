@@ -13,7 +13,11 @@ export function requireAdmin(request: Request) {
   const expected = process.env.ADMIN_TOKEN
   const authorization = request.headers.get('authorization')
   const cookie = request.headers.get('cookie') || ''
-  const session = cookie.split(';').map((item) => item.trim()).find((item) => item.startsWith('rwayeh_admin='))
+  const session = cookie
+    .split(';')
+    .map((item) => item.trim())
+    .find((item) => item.startsWith('rwayeh_admin='))
+
   if (!expected || (authorization !== `Bearer ${expected}` && session !== `rwayeh_admin=${expected}`)) {
     const error = new Error('Unauthorized')
     Object.assign(error, { statusCode: 401 })
