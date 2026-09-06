@@ -1,8 +1,12 @@
 import { requireAdmin, requireDatabase } from './_lib/db.js'
 
 
+
+
  type NodeRequest = { method?: string; body?: unknown; headers: { get: (name: string) => string | null } }
 type NodeResponse = { status: (statusCode: number) => NodeResponse; json: (data: unknown) => void }
+
+
 
 
 export default async function handler(request: NodeRequest, response: NodeResponse) {
@@ -17,7 +21,7 @@ export default async function handler(request: NodeRequest, response: NodeRespon
       return response.status(200).json(rows)
     }
     if (request.method !== 'POST') return response.status(405).json({ error: 'Method not allowed' })
-    const body = (request.body || {}) as Record<string, unknown>
+    const body = (typeof request.body === 'string' ? JSON.parse(request.body) : request.body || {}) as Record<string, unknown>
     const items = Array.isArray(body.products) ? body.products : []
     if (!body.customerName || !body.phone || !body.city || !body.address || !items.length) return response.status(400).json({ error: 'Missing required order fields' })
     const orderNumber = 'RW-' + Date.now().toString().slice(-8)
@@ -34,5 +38,3 @@ export default async function handler(request: NodeRequest, response: NodeRespon
       INSERT INTO orders (order_number, customer_id, customer_name, phone, email, city, address, notes, products, subtotal, delivery_fee, total, payment_method, status)
       VALUES (${orderNumber}, ${customer[0].id}, ${body.customerName}, ${body.phone}, ${body.email || null}, ${body.city}, ${body.address}, ${body.notes || null}, ${JSON.stringify(items)}, ${subtotal}, ${deliveryFee}, ${total}, ${body.paymentMethod || 'cash_on_delivery'}, 'Nouvelle')
       RETURNING id, order_number AS "orderNumber", total, status, created_at AS "createdAt"
-    `
-    await dbClient`UPDATE customers SET total_orders = total_orders + 1, total_spent = total_spent + ${total}, updated_at = NOW() WHERE id = ${customer[0].id}`
