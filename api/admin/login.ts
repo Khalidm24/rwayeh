@@ -1,4 +1,4 @@
-import { errorResponse, json } from '../_lib/db'
+import { errorResponse, json } from '../_lib/db.js'
 
 export default async function handler(request: Request) {
   try {
