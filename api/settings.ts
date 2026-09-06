@@ -1,4 +1,4 @@
-import { errorResponse, json, requireAdmin, requireDatabase } from './_lib/db'
+import { errorResponse, json, requireAdmin, requireDatabase } from './_lib/db.js'
 
 export default async function handler(request: Request) {
   try {
