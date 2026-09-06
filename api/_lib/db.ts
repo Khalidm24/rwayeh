@@ -8,10 +8,18 @@ export function requireDatabase() {
   return neonClient
 }
 
-export function requireAdmin(request: { headers: { get: (name: string) => string | null } }) {
+type HeaderRequest = { headers: Headers | Record<string, string | string[] | undefined> }
+
+function getHeader(request: HeaderRequest, name: string) {
+  if (request.headers instanceof Headers) return request.headers.get(name)
+  const value = request.headers[name.toLowerCase()]
+  return Array.isArray(value) ? value[0] || null : value || null
+}
+
+export function requireAdmin(request: HeaderRequest) {
   const expected = process.env['RWAYEH_' + 'ADMIN_SECRET'] || process.env['ADMIN_' + 'TOKEN']
-  const authorization = request.headers.get('authorization') || ''
-  const cookie = request.headers.get('cookie') || ''
+  const authorization = getHeader(request, 'authorization') || ''
+  const cookie = getHeader(request, 'cookie') || ''
   const session = cookie.split(';').map((item) => item.trim()).find((item) => item.startsWith('rwayeh_admin='))
   if (!expected || (authorization !== 'Bearer ' + expected && session !== 'rwayeh_admin=' + expected)) {
     const error = new Error('Unauthorized')
@@ -20,12 +28,5 @@ export function requireAdmin(request: { headers: { get: (name: string) => string
   }
 }
 
-export function json(data: unknown, status = 200) {
-  return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8' } })
-}
-
-export function errorResponse(error: unknown) {
-  const status = typeof error === 'object' && error !== null && 'statusCode' in error ? Number((error as { statusCode: number }).statusCode) : 500
-  const message = error instanceof Error ? error.message : 'Internal server error'
-  return json({ error: message }, status)
-}
+export function json(data: unknown, status = 200) { return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8' } }) }
+export function errorResponse(error: unknown) { const status = typeof error === 'object' && error !== null && 'statusCode' in error ? Number((error as { statusCode: number }).statusCode) : 500; const message = error instanceof Error ? error.message : 'Internal server error'; return json({ error: message }, status) }
