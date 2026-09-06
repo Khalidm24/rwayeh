@@ -19,7 +19,7 @@ export function requireAdmin(request: Request) {
     .map((item) => item.trim())
     .find((item) => item.startsWith('rwayeh_admin='))
 
-  if (!expected || (authorization !== `Bearer ${expected}` && session !== `rwayeh_admin=${expected}`)) {
+  if (!expected || (authorization !== 'Bearer ' + expected && session !== 'rwayeh_admin=' + expected)) {
     const error = new Error('Unauthorized')
     Object.assign(error, { statusCode: 401 })
     throw error
