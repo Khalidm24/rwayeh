@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:seed": "node scripts/seed.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@vitejs/plugin-react": "latest",
     "lucide-react": "latest",
     "motion": "latest",
@@ -16,11 +19,12 @@
     "react-dom": "latest"
   },
   "devDependencies": {
-    "tailwindcss": "latest",
     "@tailwindcss/vite": "latest",
-    "vite": "latest",
-    "typescript": "latest",
+    "@types/node": "^26.4.1",
     "@types/react": "latest",
-    "@types/react-dom": "latest"
+    "@types/react-dom": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vite": "latest"
   }
 }

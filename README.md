@@ -32,6 +32,14 @@ npm run dev
 - Photos produits locales dans `public/products`
 - Tout le code React principal est regroupé dans `src/App.tsx`
 
-## Important
+## Base de données et Vercel
 
-Le checkout est actuellement front-end : les commandes ne sont pas encore envoyées vers une base de données ou un service de livraison. Le bouton WhatsApp est configuré sur le numéro de la boutique dans `src/App.tsx`.
+Le projet utilise Neon Postgres via des fonctions serverless Vercel. Les produits sont chargés par
+`/api/products` et le checkout crée une commande réelle via `/api/orders`.
+
+1. Créer une base Neon depuis le Marketplace Vercel et copier `DATABASE_URL` dans les variables d’environnement du projet.
+2. Exécuter `migrations/001_initial.sql` dans l’éditeur SQL Neon.
+3. Définir `ADMIN_TOKEN` avec une valeur aléatoire longue dans Vercel.
+4. Redéployer. Les routes d’administration (`/api/admin/*`) exigent `Authorization: Bearer $ADMIN_TOKEN`.
+
+Variables requises : `DATABASE_URL`, `ADMIN_TOKEN`. Ne jamais les mettre dans le code client.
